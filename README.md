@@ -1,16 +1,88 @@
-# React + Vite
+# 🤖 AI Workout & Nutrition Planner
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, personalized fitness companion built specifically for students. This application uses **Google Gemini AI** to generate custom workout and diet plans based on your fitness level, goal, budget, and local environment.
 
-Currently, two official plugins are available:
+![Dashboard Preview](https://github.com/Venu3421/Workout-Planner/raw/main/public/preview.png) *(Note: Add a real screenshot here after deployment)*
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🌟 Key Features
 
-## React Compiler
+-   **Dynamic AI Plan Generation**: Integrated with **Gemini 2.5 Flash** for personalized weekly schedules.
+-   **Student-Centric Logic**: Tailors plans for "Hostel", "Home", or "Gym" settings with a focus on affordable nutrition.
+-   **Supabase Integration**: Secure authentication (Google/GitHub) and real-time database for storing plans and logs.
+-   **Progress Tracker**: Interactive weight trend charts powered by **Recharts**.
+-   **Premium Glassmorphism UI**: A sleek, high-density dashboard inspired by modern health apps.
+-   **Smart Layout**: Balanced columns that eliminate empty space and optimize information density.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+-   **Frontend**: React (Vite)
+-   **AI Model**: Google Generative AI (@google/generative-ai)
+-   **Database & Auth**: Supabase
+-   **Styling**: Vanilla CSS (Custom Glassmorphism)
+-   **Icons**: Lucide React
+-   **Charts**: Recharts
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 Getting Started
+
+### 1. Prerequisites
+-   Node.js installed
+-   A [Google AI Studio](https://aistudio.google.com/) API Key for Gemini
+-   A [Supabase](https://supabase.com/) project
+
+### 2. Installation
+```bash
+git clone https://github.com/Venu3421/Workout-Planner.git
+cd Workout-Planner
+npm install
+```
+
+### 3. Environment Variables
+Create a `.env` file in the root directory and add your keys:
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+VITE_GEMINI_API_KEY=your_gemini_api_key
+```
+
+### 4. Database Setup
+Run the following SQL in your Supabase SQL Editor to create the necessary tables and policies:
+
+```sql
+-- Profiles table for user data and AI plans
+CREATE TABLE profiles (
+  id UUID REFERENCES auth.users ON DELETE CASCADE PRIMARY KEY,
+  user_details JSONB,
+  plan_config JSONB,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now())
+);
+
+-- Progress logs for tracking transformation
+CREATE TABLE progress_logs (
+  id BIGSERIAL PRIMARY KEY,
+  user_id UUID REFERENCES auth.users ON DELETE CASCADE,
+  date DATE DEFAULT current_date,
+  weight FLOAT8,
+  completed BOOLEAN DEFAULT false,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now())
+);
+
+-- Enable RLS
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE progress_logs ENABLE ROW LEVEL SECURITY;
+
+-- Policies
+CREATE POLICY "Users can manage their own profile" ON profiles FOR ALL USING (auth.uid() = id);
+CREATE POLICY "Users can manage their own logs" ON progress_logs FOR ALL USING (auth.uid() = user_id);
+```
+
+### 5. Run Locally
+```bash
+npm run dev
+```
+
+## 🏗️ Deployment
+
+The project is optimized for deployment on **Vercel** or **Netlify**. Ensure you add the environment variables mentioned above in your deployment dashboard.
+
+## 📄 License
+MIT License - Created for student fitness optimization.
