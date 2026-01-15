@@ -2,7 +2,17 @@
 
 A modern, personalized fitness companion built specifically for students. This application uses **Google Gemini AI** to generate custom workout and diet plans based on your fitness level, goal, budget, and local environment.
 
-![Dashboard Preview](https://github.com/Venu3421/Workout-Planner/raw/main/public/preview.png) *(Note: Add a real screenshot here after deployment)*
+## 📱 App Preview
+
+<p align="center">
+  <img src="./public/dashboard.png" width="32%" alt="Dashboard View" />
+  <img src="./public/plan-generation.png" width="32%" alt="AI Plan Generation" />
+  <img src="./public/progress-tracker.png" width="32%" alt="Progress Tracking" />
+</p>
+
+> **Note:** Ensure you have uploaded `dashboard.png`, `plan-generation.png`, and `progress-tracker.png` to your `/public` folder for these to display.
+
+---
 
 ## 🌟 Key Features
 
@@ -31,20 +41,25 @@ A modern, personalized fitness companion built specifically for students. This a
 
 ### 2. Installation
 ```bash
-git clone https://github.com/Venu3421/Workout-Planner.git
+git clone [https://github.com/Venu3421/Workout-Planner.git](https://github.com/Venu3421/Workout-Planner.git)
 cd Workout-Planner
 npm install
+
 ```
 
 ### 3. Environment Variables
+
 Create a `.env` file in the root directory and add your keys:
+
 ```env
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 VITE_GEMINI_API_KEY=your_gemini_api_key
+
 ```
 
 ### 4. Database Setup
+
 Run the following SQL in your Supabase SQL Editor to create the necessary tables and policies:
 
 ```sql
@@ -73,11 +88,14 @@ ALTER TABLE progress_logs ENABLE ROW LEVEL SECURITY;
 -- Policies
 CREATE POLICY "Users can manage their own profile" ON profiles FOR ALL USING (auth.uid() = id);
 CREATE POLICY "Users can manage their own logs" ON progress_logs FOR ALL USING (auth.uid() = user_id);
+
 ```
 
 ### 5. Run Locally
+
 ```bash
 npm run dev
+
 ```
 
 ## 🏗️ Deployment
@@ -85,4 +103,5 @@ npm run dev
 The project is optimized for deployment on **Vercel** or **Netlify**. Ensure you add the environment variables mentioned above in your deployment dashboard.
 
 ## 📄 License
+
 MIT License - Created for student fitness optimization.
